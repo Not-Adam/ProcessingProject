@@ -1,5 +1,6 @@
-package me.adam.processing;
+package me.adam.processing.circle;
 
+import me.adam.processing.Utils;
 import processing.core.PVector;
 
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class Circle {
     private static final Set<Circle> CIRCLES = new HashSet<>();
     private static final Map<Integer, Circle> ID_CIRCLE = new HashMap<>();
 
-    public static boolean createCircle(int id, int x, int y, int radius, int r, int g, int b) {
+    public static boolean createCircle(int id, float x, float y, int radius, int r, int g, int b) {
         if (ID_CIRCLE.containsKey(id))
             return false;
 
@@ -22,13 +23,14 @@ public class Circle {
         return true;
     }
 
-    public static Circle getCircle(String id) {
-        return ID_CIRCLE.get(id.toLowerCase());
+    public static Circle getCircle(Integer id) {
+        return ID_CIRCLE.get(id);
     }
 
     public static Set<Circle> getAllCircles() {
         return CIRCLES;
     }
+
 
 
     private final int id;
@@ -38,21 +40,25 @@ public class Circle {
     private PVector gravity;
 
     private final int radius;
+    private final float m;
 
     private final int r;
     private final int g;
     private final int b;
 
-    private Circle(int id, int x, int y, int radius, int r, int g, int b) {
+    private Circle(int id, float x, float y, int radius, int r, int g, int b) {
         this.id = id;
         this.radius = radius;
+        this.m = radius*.1f;
         this.r = r;
         this.g = g;
         this.b = b;
         this.location = new PVector(x, y);
-        this.velocity = new PVector((float) (Math.random() * 10),(float) (Math.random() * 10));
+        this.velocity = new PVector(Utils.getRandomFloat(-10, 10), Utils.getRandomFloat(-10, 10));
         this.gravity = new PVector(0,3.0f);
     }
+
+
 
     public Integer getId() {
         return this.id;
@@ -78,7 +84,6 @@ public class Circle {
         return this.gravity;
     }
 
-
     public int getRadius() {
         return this.radius;
     }
@@ -94,5 +99,15 @@ public class Circle {
     }
     public int getB() {
         return this.b;
+    }
+
+
+
+    public boolean delete() {
+        if (!ID_CIRCLE.containsKey(this.getId()))
+            return false;
+        CIRCLES.remove(this);
+        ID_CIRCLE.remove(this.getId());
+        return true;
     }
 }
