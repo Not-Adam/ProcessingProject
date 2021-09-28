@@ -1,5 +1,6 @@
 package me.adam.processing.circle;
 
+import me.adam.processing.MainClass;
 import me.adam.processing.Utils;
 import processing.core.PVector;
 

@@ -26,25 +26,9 @@ public class MainClass extends PApplet {
 
         for (Circle circle : getAllCircles()) {
             PVector location = circle.getLocation();
-            PVector velocity = circle.getVelocity();
-            PVector gravity = circle.getGravity();
 
-            if (location.x + (circle.getRadius() / 2) > width) {
-                velocity.x = velocity.x * -0.70f;
-                location.x = width - (circle.getRadius() / 2);
-            } else if (location.x - (circle.getRadius() / 2) < 0) {
-                velocity.x = velocity.x * -0.70f;
-                location.x = 0 + (circle.getRadius() / 2);
-            }
-
-            if (location.y + (circle.getRadius() / 2) > height) {
-                velocity.y = velocity.y * -0.70f;
-                location.y = height - (circle.getRadius() / 2);
-            }
-
-            location.add(velocity);
-            velocity.add(gravity);
-
+            checkBoundingBox(circle, location);
+            update(circle);
             int[] color = circle.getColor();
             fill(color[0], color[1], color[2]);
             ellipse(location.x, location.y, circle.getRadius(), circle.getRadius());
@@ -52,10 +36,38 @@ public class MainClass extends PApplet {
         }
     }
 
+
+
+
+
+
+
+    // DRAW UTILS
+
     public void drawId(Circle circle) {
         fill(255);
         text(String.valueOf(circle.getId()), circle.getX() - 7, circle.getY() + 7);
         textSize(24);
+    }
+
+    public void checkBoundingBox(Circle circle, PVector location) {
+        if (location.x + (circle.getRadius() / 2) > width) {
+            circle.getVelocity().x = circle.getVelocity().x * -0.70f;
+            location.x = width - (circle.getRadius() / 2);
+        } else if (location.x - (circle.getRadius() / 2) < 0) {
+            circle.getVelocity().x = circle.getVelocity().x * -0.70f;
+            location.x = 0 + (circle.getRadius() / 2);
+        }
+
+        if (location.y + (circle.getRadius() / 2) > height) {
+            circle.getVelocity().y = circle.getVelocity().y * -0.70f;
+            location.y = height - (circle.getRadius() / 2);
+        }
+    }
+
+    public void update(Circle circle) {
+        circle.getLocation().add(circle.getVelocity());
+        circle.getVelocity().add(circle.getGravity());
     }
 
     public static void main(String[] args) {
