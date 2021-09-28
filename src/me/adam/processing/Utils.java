@@ -6,6 +6,7 @@ public class Utils {
     }
 
     public static int getRandomInt(int min, int max) {
-        return Math.toIntExact((long) ((Math.random() * (max - min)) + min));
+        System.out.println(Math.toIntExact((long) ((Math.random() * (max - min)) + min)));
+        return 0;
     }
 }

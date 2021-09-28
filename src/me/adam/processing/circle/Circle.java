@@ -33,14 +33,13 @@ public class Circle {
 
 
 
-    private final int id;
+    private int id;
 
     private PVector location;
     private PVector velocity;
     private PVector gravity;
 
     private final int radius;
-    private final float m;
 
     private final int r;
     private final int g;
@@ -49,12 +48,11 @@ public class Circle {
     private Circle(int id, float x, float y, int radius, int r, int g, int b) {
         this.id = id;
         this.radius = radius;
-        this.m = radius*.1f;
         this.r = r;
         this.g = g;
         this.b = b;
         this.location = new PVector(x, y);
-        this.velocity = new PVector(Utils.getRandomFloat(-10, 10), Utils.getRandomFloat(-10, 10));
+        this.velocity = new PVector(Utils.getRandomFloat(-35, 35), Utils.getRandomFloat(-35, 35));
         this.gravity = new PVector(0,3.0f);
     }
 
@@ -101,13 +99,19 @@ public class Circle {
         return this.b;
     }
 
-
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public boolean delete() {
         if (!ID_CIRCLE.containsKey(this.getId()))
             return false;
         CIRCLES.remove(this);
-        ID_CIRCLE.remove(this.getId());
+        ID_CIRCLE.clear();
+        for (Circle circle : CIRCLES) {
+            circle.setId(ID_CIRCLE.size() + 1);
+            ID_CIRCLE.put(ID_CIRCLE.size() + 1, circle);
+        }
         return true;
     }
 }

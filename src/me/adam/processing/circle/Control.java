@@ -9,9 +9,6 @@ import static me.adam.processing.circle.Circle.getAllCircles;
 
 public class Control {
     public static void initialize() {
-        int delay = 1000;
-        int period = Math.toIntExact(Math.round(Math.random() * 60)) * 1000;
-
         Timer timer = new Timer();
         timer.scheduleAtFixedRate( new TimerTask() {
             @Override
@@ -22,13 +19,13 @@ public class Control {
                 explode(circle);
                 circle.delete();
             }
-        }, delay, period);
+        }, 1000, Math.toIntExact(Math.round(Math.random() * 60)) * 1000);
     }
 
 
     public static void explode(Circle circle) {
         for (int i = 0; i<4; i++) {
-            createCircle(getAllCircles().size() + 1, circle.getX(), circle.getY(), circle.getRadius() / 2, circle.getR(), circle.getG(), circle.getB());
+            createCircle(getAllCircles().size() + 2, circle.getX(), circle.getY(), circle.getRadius() / 2, circle.getR(), circle.getG(), circle.getB());
         }
     }
 }

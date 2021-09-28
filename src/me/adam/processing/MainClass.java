@@ -15,10 +15,10 @@ public class MainClass extends PApplet {
 
     public void setup() {
         Control.initialize();
-        createCircle(1, 200, 200, 300, 255, 0, 0);
+        createCircle(1, 200, 200, 50, 255, 0, 0);
         createCircle(2, 800, 100, 150, 0, 255, 0);
-        createCircle(3, 600, 800, 300, 0, 0, 255);
-        frameRate(60);
+        createCircle(3, 600, 800, 50, 0, 0, 255);
+        frameRate(120);
     }
 
     public void draw() {
@@ -29,12 +29,17 @@ public class MainClass extends PApplet {
             PVector velocity = circle.getVelocity();
             PVector gravity = circle.getGravity();
 
-            if ((location.x > width) || (location.x < 0)) {
-                velocity.x = velocity.x * -1;
+            if (location.x + (circle.getRadius() / 2) > width) {
+                velocity.x = velocity.x * -0.70f;
+                location.x = width - (circle.getRadius() / 2);
+            } else if (location.x - (circle.getRadius() / 2) < 0) {
+                velocity.x = velocity.x * -0.70f;
+                location.x = 0 + (circle.getRadius() / 2);
             }
-            if (location.y > height) {
-                velocity.y = velocity.y * -0.85f;
-                location.y = height;
+
+            if (location.y + (circle.getRadius() / 2) > height) {
+                velocity.y = velocity.y * -0.70f;
+                location.y = height - (circle.getRadius() / 2);
             }
 
             location.add(velocity);
