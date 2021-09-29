@@ -1,6 +1,5 @@
 package me.adam.processing.circle;
 
-import me.adam.processing.MainClass;
 import me.adam.processing.Utils;
 import processing.core.PVector;
 
@@ -53,8 +52,8 @@ public class Circle {
         this.g = g;
         this.b = b;
         this.location = new PVector(x, y);
-        this.velocity = new PVector(Utils.getRandomFloat(-35, 35), Utils.getRandomFloat(-35, 35));
-        this.gravity = new PVector(0,3.0f);
+        this.velocity = new PVector(Utils.getRandomFloat(-50, 50), Utils.getRandomFloat(-50, 50));
+        this.gravity = new PVector(0f,1.5f);
     }
 
 
