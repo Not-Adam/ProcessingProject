@@ -2,9 +2,16 @@ package me.adam.processing;
 
 import me.adam.processing.circle.Circle;
 import me.adam.processing.circle.Control;
-import processing.core.*;
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.core.PVector;
 
-import static me.adam.processing.circle.Circle.*;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static me.adam.processing.circle.Circle.createCircle;
+import static me.adam.processing.circle.Circle.getAllCircles;
+import static me.adam.processing.circle.Control.*;
 
 public class MainClass extends PApplet {
 
@@ -14,16 +21,29 @@ public class MainClass extends PApplet {
     }
 
     public void setup() {
-        Control.initialize();
+
+        for (int i = 1; i <= 48; i++) {
+            String num = String.valueOf(i);
+            if (num.length() == 1) num = "0" + num;
+            PImage img = loadImage("C:\\Users\\rabu6\\Desktop\\Comp Sci A\\Processing Project\\src\\me\\adam\\processing\\resources\\exp_" + num +".png");
+            explosionSequence.add(img);
+        }
 
         createCircle(1, 200, 200, 50, 255, 0, 0);
         createCircle(2, 800, 100, 150, 0, 255, 0);
         createCircle(3, 600, 800, 50, 0, 0, 255);
+
+        Control.initialize();
+
         frameRate(120);
     }
 
     public void draw() {
-        background(0);
+        background(20);
+
+        if (time == 0) {
+            runExplosionSequence(getNextCircle());
+        }
 
         for (Circle circle : getAllCircles()) {
             PVector location = circle.getLocation();
@@ -36,7 +56,7 @@ public class MainClass extends PApplet {
             drawCircleId(circle);
         }
 
-        drawText(String.valueOf(Control.time), 50, 50);
+        drawText(String.valueOf(time), 50, 50);
 
     }
 
@@ -47,6 +67,19 @@ public class MainClass extends PApplet {
 
 
     // DRAW UTILS
+
+    public void runExplosionSequence(Circle circle) {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate( new TimerTask() {
+            @Override
+            public void run() {
+                for (PImage img : explosionSequence) {
+                    image(img, circle.getX() - circle.getRadius() * 3, circle.getY() - circle.getRadius() * 2);
+                }
+                timer.cancel();
+            }
+        }, 0, 200);
+    }
 
     public void drawText(String text, float x, float y) {
         fill(255);

@@ -1,5 +1,9 @@
 package me.adam.processing.circle;
 
+import processing.core.PImage;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,22 +12,29 @@ import static me.adam.processing.circle.Circle.createCircle;
 import static me.adam.processing.circle.Circle.getAllCircles;
 
 public class Control {
+    public static List<PImage> explosionSequence = new ArrayList<>();
+
+    public static Object[] circles;
+    public static Circle nextCircle;
+
     public static int time;
 
     public static void initialize() {
-        int period = Math.toIntExact(Math.round(Math.random() * 20)) * 1000;
+        circles = getAllCircles().toArray();
+        nextCircle = (Circle) circles[getRandomInt(0, circles.length)];
+
+        int period = Math.toIntExact(Math.round(Math.random() * 10)) * 1000;
         time = period / 1000;
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate( new TimerTask() {
             @Override
             public void run() {
-                Object[] circles = getAllCircles().toArray();
-                Circle circle = (Circle) circles[getRandomInt(0, circles.length)];
-
-                explode(circle);
-                circle.delete();
+                explode(nextCircle);
+                nextCircle.delete();
                 time = period/1000;
+
+                nextCircle = (Circle) circles[getRandomInt(0, circles.length)];
             }
         }, period, period);
 
@@ -41,5 +52,7 @@ public class Control {
         }
     }
 
-
+    public static Circle getNextCircle() {
+        return nextCircle;
+    }
 }
